@@ -60,6 +60,7 @@ npm run dev
 To check the ESLint issue (for deployment):-
 ```bash
 npm run lint
+npm run build
 ```
 
 The application should now be running! Here's how to use it:

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { UdemyCourse } from '../../../types/udemy';
+import { UdemyCourse } from '../../types/udemy';
 
 interface CookieInputProps {
   onCoursesLoaded: (courses: UdemyCourse[]) => void;

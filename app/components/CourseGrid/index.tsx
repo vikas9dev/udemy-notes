@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { UdemyCourse } from '../../../types/udemy';
+import { UdemyCourse } from '../../types/udemy';
 import Image from 'next/image';
 
 interface CourseGridProps {
