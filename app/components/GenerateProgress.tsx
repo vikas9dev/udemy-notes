@@ -14,6 +14,18 @@ export default function GenerateProgress({ courseId, lectureIds, onClose, isGene
     status: 'processing',
     message: 'Starting note generation...'
   });
+  const [zipStatus, setZipStatus] = useState<'idle' | 'generating' | 'downloaded'>('idle');
+
+  useEffect(() => {
+    if (isGenerating) {
+      setProgress({
+        progress: 0,
+        status: 'processing',
+        message: 'Starting note generation...'
+      });
+      setZipStatus('idle');
+    }
+  }, [isGenerating]);
 
   useEffect(() => {
     if (!isGenerating) return;
@@ -74,6 +86,11 @@ export default function GenerateProgress({ courseId, lectureIds, onClose, isGene
                 setProgress(data);
 
                 if (data.status === 'completed') {
+                  setZipStatus('generating');
+                  setProgress(prev => ({
+                    ...prev,
+                    message: 'Generating ZIP file...'
+                  }));
                   downloadZip();
                   return;
                 }
@@ -131,14 +148,18 @@ export default function GenerateProgress({ courseId, lectureIds, onClose, isGene
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = response.headers.get('Content-Disposition')?.split('filename=')[1].replace(/"/g, '') || 'udemy-notes.zip';
+      a.download = response.headers.get('Content-Disposition')?.split('filename=')[1]?.replace(/"/g, '') || 'udemy-notes.zip';
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
 
-      // Close the progress modal after a delay
-      setTimeout(onClose, 3000);
+      setZipStatus('downloaded');
+      setProgress(prev => ({
+        ...prev,
+        message: 'File downloaded.'
+      }));
+      // Do not auto-close, let user close manually
     } catch (error) {
       console.error('Error downloading ZIP:', error);
       setProgress({
@@ -158,7 +179,11 @@ export default function GenerateProgress({ courseId, lectureIds, onClose, isGene
       <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
         <div className="mb-4">
           <h3 className="text-lg font-semibold mb-2">
-            {progress.status === 'completed' ? 'Success!' : `Generating Notes... ${progress.progress}%`}
+            {progress.status === 'completed' && zipStatus === 'downloaded'
+              ? 'Success!'
+              : progress.status === 'completed' && zipStatus === 'generating'
+              ? 'Generating ZIP file...'
+              : `Generating Notes... ${progress.progress}%`}
           </h3>
           <p className="text-gray-600">{progress.message}</p>
           {progress.chapter && (
@@ -182,10 +207,10 @@ export default function GenerateProgress({ courseId, lectureIds, onClose, isGene
           />
         </div>
 
-        {progress.status === 'error' && (
+        {(progress.status === 'error' || zipStatus === 'downloaded') && (
           <button
             onClick={onClose}
-            className="w-full bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition-colors"
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors mt-2"
           >
             Close
           </button>

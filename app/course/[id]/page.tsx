@@ -3,10 +3,8 @@
 import { useState, useEffect } from 'react';
 import { use } from 'react';
 import { Disclosure } from '@headlessui/react';
-import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import { CurriculumItem } from '../../types/udemy';
 import GenerateProgress from '../../components/GenerateProgress';
-import { log } from 'console';
 
 interface ChapterData {
   id: number;

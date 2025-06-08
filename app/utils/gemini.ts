@@ -25,6 +25,7 @@ Rewrite the following lecture caption as a well-structured blog note section usi
 - Include short, simple code snippets in fenced blocks, if applicable.
 - Ensure proper Markdown formatting with real line breaks instead of escaped characters like \`\n\`.
 - The final output must be a clean, well-formatted Markdown document ready to be written as a \`.md\` file.
+- Do not wrap the response in \`\`\`markdown or \`\`\`md.
 
 Here is the lecture transcript:
 
