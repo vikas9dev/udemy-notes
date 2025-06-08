@@ -184,111 +184,66 @@ const id = resolvedParams?.id;
   return (
     <>
       {courseInfo && (
-        <div className="bg-white border-b">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div className="flex items-start gap-6">
-              <img
-                src={courseInfo.image_480x270}
-                alt={courseInfo.title}
-                className="w-40 h-auto rounded-md"
-              />
-              <div className="flex-1 min-w-0">
-                <h1 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">
-                  {courseInfo.title}
-                </h1>
-                <div className="flex items-center gap-2">
-                  <div className="w-full max-w-xs bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-green-500 h-2 rounded-full"
-                      style={{ width: `${courseInfo.completion_ratio}%` }}
-                    />
-                  </div>
-                  <span className="text-sm text-gray-600 whitespace-nowrap">
-                    {Math.round(courseInfo.completion_ratio)}% complete
-                  </span>
+        <div className="bg-white dark:bg-gray-800 border-b rounded-lg shadow p-6 mb-6">
+          <div className="flex items-start gap-6">
+            <img
+              src={courseInfo.image_480x270}
+              alt={courseInfo.title}
+              className="w-40 h-auto rounded-md"
+            />
+            <div className="flex-1 min-w-0">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">
+                {courseInfo.title}
+              </h1>
+              <div className="flex items-center gap-2">
+                <div className="w-full max-w-xs bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                  <div className="bg-emerald-500 h-2 rounded-full" style={{ width: `${courseInfo.completion_ratio}%` }} />
                 </div>
+                <span className="text-sm text-gray-600 dark:text-gray-300">{courseInfo.completion_ratio}% Complete</span>
               </div>
             </div>
           </div>
         </div>
       )}
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="space-y-1">
-          <div className="text-sm text-gray-600 mb-2">Select the lectures you want to generate notes for: </div>
-          {curriculum.map((chapter) => (
-            <Disclosure key={chapter.id}>
-              {({ open }) => (
-                <div className="border rounded-md bg-white">
-                  <Disclosure.Button as="div" className="w-full">
-                    <button
-                      type="button"
-                      className="w-full flex items-center justify-between px-4 py-2 text-sm font-medium text-left text-gray-900 hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75"
-                    >
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          checked={chapter.lectures.every((l) => selectedLectures.has(l.id))}
-                          onChange={() => toggleChapter(chapter.id, chapter.lectures)}
-                          onClick={(e) => e.stopPropagation()}
-                          className="h-4 w-4 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500"
-                        />
-                        <span className="truncate">{chapter.title}</span>
-                      </div>
-                      <span
-                        className="text-gray-400 text-lg"
-                        style={{
-                          transform: open ? 'rotate(90deg)' : 'rotate(0)',
-                          transition: 'transform 0.2s ease-in-out',
-                          display: 'inline-block'
-                        }}
-                      >
-                        ›
-                      </span>
-                    </button>
-                  </Disclosure.Button>
-
-                  <Disclosure.Panel>
-                    <div className="bg-gray-50 pl-6 pr-4 py-2 border-t border-gray-200 space-y-1">
-                      {chapter.lectures.map((lecture) => (
-                        <div
-                          key={lecture.id}
-                          className="flex items-center gap-2 pl-4 py-1.5 rounded hover:bg-gray-100"
-                        >
-                          <input
-                            type="checkbox"
-                            checked={selectedLectures.has(lecture.id)}
-                            onChange={() => toggleLecture(lecture.id)}
-                            className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
-                          />
-                          <span className="text-sm text-gray-700 truncate">{lecture.title}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </Disclosure.Panel>
-
-                </div>
-              )}
-            </Disclosure>
-          ))}
-        </div>
+      <div className="mb-8">
+        {curriculum.map((chapter) => (
+          <details key={chapter.id} className="border border-gray-200 dark:border-gray-600 rounded-lg p-4 mb-2 bg-white dark:bg-gray-800">
+            <summary className="font-medium text-gray-900 dark:text-white flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={chapter.lectures.every(l => selectedLectures.has(l.id))}
+                onChange={() => toggleChapter(chapter.id, chapter.lectures)}
+                className="mr-2 h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+              />
+              {chapter.title}
+            </summary>
+            <div className="ml-4 mt-2 space-y-1">
+              {chapter.lectures.map((lecture) => (
+                <label key={lecture.id} className="flex items-center text-gray-800 dark:text-gray-300 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={selectedLectures.has(lecture.id)}
+                    onChange={() => toggleLecture(lecture.id)}
+                    className="mr-2 h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                  />
+                  {lecture.title}
+                </label>
+              ))}
+            </div>
+          </details>
+        ))}
       </div>
 
-      {selectedLectures.size > 0 && (
-        <div className="bottom-0 left-0 right-0 bg-white border-t shadow-lg">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
-            <span className="text-sm text-gray-600">
-              {selectedLectures.size} lecture{selectedLectures.size !== 1 ? 's' : ''} selected
-            </span>
-            <button
-              onClick={handleGenerateNotes}
-              className="bg-indigo-600 text-white px-4 py-1.5 text-sm rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            >
-              Generate Notes
-            </button>
-          </div>
-        </div>
-      )}
+      <div className="sticky bottom-0 bg-white dark:bg-gray-900 border-t py-4 -mx-8 px-8 flex justify-end">
+        <button
+          onClick={handleGenerateNotes}
+          disabled={selectedLectures.size === 0}
+          className="bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-700 disabled:bg-indigo-300 disabled:cursor-not-allowed text-lg font-semibold shadow"
+        >
+          Generate Notes
+        </button>
+      </div>
 
       <GenerateProgress
         isGenerating={isGenerating}

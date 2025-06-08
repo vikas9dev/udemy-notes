@@ -1,36 +1,12 @@
 export default function Footer() {
+  const year = new Date().getFullYear();
   return (
-    <footer className="bg-white border-t mt-auto">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="py-4">
-          <div className="flex justify-between items-center">
-            <p className="text-sm text-gray-500">
-              © {new Date().getFullYear()} Udemy Notes. All rights reserved.
-            </p>
-            <div className="flex space-x-6">
-              <a
-                href="https://github.com/yourusername/udemy-notes"
-                className="text-gray-400 hover:text-gray-500"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                GitHub
-              </a>
-              <a
-                href="#"
-                className="text-gray-400 hover:text-gray-500"
-              >
-                Privacy Policy
-              </a>
-              <a
-                href="#"
-                className="text-gray-400 hover:text-gray-500"
-              >
-                Terms of Service
-              </a>
-            </div>
-          </div>
-        </div>
+    <footer className="w-full mt-auto border-t py-4 text-center text-sm text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-900">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        &copy; {year} Udemy Notes. All rights reserved. |
+        <a href="#" className="text-indigo-600 dark:text-indigo-400 hover:underline ml-1">GitHub</a> |
+        <a href="#" className="hover:underline ml-1">Privacy</a> |
+        <a href="#" className="hover:underline ml-1">Terms</a>
       </div>
     </footer>
   );

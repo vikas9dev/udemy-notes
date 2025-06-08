@@ -80,31 +80,29 @@ export default function CookieInput({ onCoursesLoaded }: CookieInputProps) {
 
   return (
     <form onSubmit={handleSubmit} className="mb-12">
-      <div className="flex flex-col space-y-2">
-        <label htmlFor="cookie" className="text-sm font-medium">
-          Udemy Cookie
-        </label>
+      <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4 my-6">
+        <label htmlFor="cookie" className="block font-medium text-gray-700 dark:text-gray-300 mb-2">Udemy Cookie</label>
         <textarea
           id="cookie"
           value={cookie}
           onChange={(e) => setCookie(e.target.value)}
-          placeholder="Paste your Udemy cookie here"
-          className="p-2 border rounded-md w-full h-24 font-mono text-sm"
+          placeholder="Paste your cookie here..."
+          className="w-full border rounded-md p-2 h-24 text-sm bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white"
           required
         />
+        <button
+          type="submit"
+          disabled={loading}
+          className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md"
+        >
+          {loading ? 'Loading...' : 'Save & Load Courses'}
+        </button>
+        {error && (
+          <div className="mt-4 bg-red-50 text-red-600 p-4 rounded-md">
+            {error}
+          </div>
+        )}
       </div>
-      <button
-        type="submit"
-        disabled={loading}
-        className="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 disabled:bg-indigo-300"
-      >
-        {loading ? 'Loading...' : 'Save & Load Courses'}
-      </button>
-      {error && (
-        <div className="mt-4 bg-red-50 text-red-600 p-4 rounded-md">
-          {error}
-        </div>
-      )}
     </form>
   );
 } 

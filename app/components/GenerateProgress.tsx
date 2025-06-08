@@ -175,42 +175,36 @@ export default function GenerateProgress({ courseId, lectureIds, onClose, isGene
   }
 
   return (
-    <div className="inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold mb-2">
-            {progress.status === 'completed' && zipStatus === 'downloaded'
-              ? 'Success!'
-              : progress.status === 'completed' && zipStatus === 'generating'
-              ? 'Generating ZIP file...'
-              : `Generating Notes... ${progress.progress}%`}
-          </h3>
-          <p className="text-gray-600">{progress.message}</p>
-          {progress.chapter && (
-            <p className="text-sm text-gray-500 mt-1">
-              Chapter: {progress.chapter}
-            </p>
-          )}
-          {progress.lecture && (
-            <p className="text-sm text-gray-500">
-              Lecture: {progress.lecture}
-            </p>
-          )}
-        </div>
-
-        <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 w-full max-w-md">
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+          {progress.status === 'completed' && zipStatus === 'downloaded'
+            ? 'Success!'
+            : progress.status === 'completed' && zipStatus === 'generating'
+            ? 'Generating ZIP file...'
+            : `Generating Notes... ${progress.progress}%`}
+        </h3>
+        <div className="w-full bg-gray-300 dark:bg-gray-700 rounded-full h-3 mb-4">
           <div
-            className={`h-2 rounded-full ${
-              progress.status === 'error' ? 'bg-red-500' : 'bg-blue-500'
-            }`}
+            className={`bg-indigo-600 h-3 rounded-full transition-all duration-300`}
             style={{ width: `${progress.progress}%` }}
           />
         </div>
-
+        <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">{progress.message}</p>
+        {progress.chapter && (
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            Chapter: {progress.chapter}
+          </p>
+        )}
+        {progress.lecture && (
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            Lecture: {progress.lecture}
+          </p>
+        )}
         {(progress.status === 'error' || zipStatus === 'downloaded') && (
           <button
             onClick={onClose}
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors mt-2"
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors mt-4"
           >
             Close
           </button>
