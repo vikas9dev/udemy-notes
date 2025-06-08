@@ -40,7 +40,56 @@ export default function GenerateProgress({ courseId, lectureIds, onClose, isGene
       return;
     }
 
-    let abortController = new AbortController();
+    const abortController = new AbortController();
+
+    async function downloadZip() {
+      try {
+        const cookie = localStorage.getItem('udemyCookie');
+        if (!cookie) {
+          throw new Error('No Udemy cookie found');
+        }
+
+        const response = await fetch('/api/generate-zip/download', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Udemy-Cookie': cookie || ''
+          },
+          body: JSON.stringify({ 
+            courseId, 
+            lectureIds: lectureIds.map(id => id.toString())
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = response.headers.get('Content-Disposition')?.split('filename=')[1]?.replace(/"/g, '') || 'udemy-notes.zip';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+
+        setZipStatus('downloaded');
+        setProgress(prev => ({
+          ...prev,
+          message: 'File downloaded.'
+        }));
+        // Do not auto-close, let user close manually
+      } catch (error) {
+        console.error('Error downloading ZIP:', error);
+        setProgress({
+          progress: 100,
+          status: 'error',
+          message: error instanceof Error ? error.message : 'Failed to download the ZIP file. Please try again.',
+        });
+      }
+    }
 
     async function startEventStream() {
       try {
@@ -74,10 +123,8 @@ export default function GenerateProgress({ courseId, lectureIds, onClose, isGene
 
           buffer += decoder.decode(value, { stream: true });
           const lines = buffer.split('\n');
-          
-          // Process all complete lines
-          buffer = lines.pop() || ''; // Keep the last incomplete line in the buffer
-          
+          buffer = lines.pop() || '';
+
           for (const line of lines) {
             if (line.startsWith('data: ')) {
               try {
@@ -121,67 +168,16 @@ export default function GenerateProgress({ courseId, lectureIds, onClose, isGene
     };
   }, [courseId, lectureIds, isGenerating]);
 
-  const downloadZip = async () => {
-    try {
-      const cookie = localStorage.getItem('udemyCookie');
-      if (!cookie) {
-        throw new Error('No Udemy cookie found');
-      }
-
-      const response = await fetch('/api/generate-zip/download', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Udemy-Cookie': cookie || ''
-        },
-        body: JSON.stringify({ 
-          courseId, 
-          lectureIds: lectureIds.map(id => id.toString())
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = response.headers.get('Content-Disposition')?.split('filename=')[1]?.replace(/"/g, '') || 'udemy-notes.zip';
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-
-      setZipStatus('downloaded');
-      setProgress(prev => ({
-        ...prev,
-        message: 'File downloaded.'
-      }));
-      // Do not auto-close, let user close manually
-    } catch (error) {
-      console.error('Error downloading ZIP:', error);
-      setProgress({
-        progress: 100,
-        status: 'error',
-        message: error instanceof Error ? error.message : 'Failed to download the ZIP file. Please try again.',
-      });
-    }
-  };
-
   if (!isGenerating) {
     return null;
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+    <div className="inset-0 bg-black/50 z-50 flex items-center justify-center">
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 w-full max-w-md">
         <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
           {progress.status === 'completed' && zipStatus === 'downloaded'
             ? 'Success!'
-            : progress.status === 'completed' && zipStatus === 'generating'
-            ? 'Generating ZIP file...'
             : `Generating Notes... ${progress.progress}%`}
         </h3>
         <div className="w-full bg-gray-300 dark:bg-gray-700 rounded-full h-3 mb-4">
@@ -190,7 +186,17 @@ export default function GenerateProgress({ courseId, lectureIds, onClose, isGene
             style={{ width: `${progress.progress}%` }}
           />
         </div>
-        <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">{progress.message}</p>
+        {/* Secondary message for ZIP status */}
+        {zipStatus === 'generating' && (
+          <p className="text-sm text-blue-700 dark:text-blue-300 mb-2 font-semibold">Generating ZIP file...</p>
+        )}
+        {zipStatus === 'downloaded' && (
+          <p className="text-sm text-green-700 dark:text-green-300 mb-2 font-semibold">File downloaded.</p>
+        )}
+        {/* Progress message and details */}
+        {zipStatus === 'idle' && (
+          <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">{progress.message}</p>
+        )}
         {progress.chapter && (
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
             Chapter: {progress.chapter}

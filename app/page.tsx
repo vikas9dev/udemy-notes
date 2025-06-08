@@ -11,7 +11,7 @@ export default function Home() {
   const router = useRouter();
   const [courses, setCourses] = useState<UdemyCourse[]>([]);
   const [selectedCourse, setSelectedCourse] = useState<UdemyCourse | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
 
   const handleGenerateNotes = () => {
     if (!selectedCourse) return;

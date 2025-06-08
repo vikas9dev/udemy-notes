@@ -3,23 +3,6 @@ import { PassThrough, Readable } from 'stream';
 import { Progress } from '../../types/progress';
 import { getCourseInfo } from '../../utils/udemy';
 
-// Create a write stream that we can pipe to the response
-class ResponseStream extends WritableStream<Uint8Array> {
-  private controller: ReadableStreamDefaultController<Uint8Array>;
-
-  constructor(controller: ReadableStreamDefaultController<Uint8Array>) {
-    super({
-      write: (chunk) => {
-        controller.enqueue(chunk);
-      },
-      close: () => {
-        controller.close();
-      },
-    });
-    this.controller = controller;
-  }
-}
-
 // Helper function to send progress updates
 async function sendProgress(writer: WritableStreamDefaultWriter, progress: Progress) {
   await writer.write(new TextEncoder().encode(`data: ${JSON.stringify(progress)}\n\n`));

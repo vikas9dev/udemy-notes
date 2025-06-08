@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { use } from 'react';
-import { Disclosure } from '@headlessui/react';
+import Image from 'next/image';
 import { CurriculumItem } from '../../types/udemy';
 import GenerateProgress from '../../components/GenerateProgress';
 
@@ -32,7 +32,6 @@ const id = resolvedParams?.id;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [showGenerateModal, setShowGenerateModal] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -57,7 +56,13 @@ const id = resolvedParams?.id;
         }
 
         const coursesData = await courseResponse.json();
-        const course = coursesData.results.find((c: any) => c.id.toString() === id);
+        const course = coursesData.results.find((c: unknown) => {
+          if (typeof c === 'object' && c !== null && 'id' in c) {
+            // @ts-expect-error: dynamic object from API
+            return c.id.toString() === id;
+          }
+          return false;
+        });
         if (course) {
           setCourseInfo({
             title: course.title,
@@ -99,8 +104,12 @@ const id = resolvedParams?.id;
         });
 
         setCurriculum(chapters);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred.');
+        }
       } finally {
         setLoading(false);
       }
@@ -186,9 +195,11 @@ const id = resolvedParams?.id;
       {courseInfo && (
         <div className="bg-white dark:bg-gray-800 border-b rounded-lg shadow p-6 mb-6">
           <div className="flex items-start gap-6">
-            <img
+            <Image
               src={courseInfo.image_480x270}
               alt={courseInfo.title}
+              width={160}
+              height={90}
               className="w-40 h-auto rounded-md"
             />
             <div className="flex-1 min-w-0">
@@ -235,7 +246,10 @@ const id = resolvedParams?.id;
         ))}
       </div>
 
-      <div className="sticky bottom-0 bg-white dark:bg-gray-900 border-t py-4 -mx-8 px-8 flex justify-end">
+      <div className="sticky bottom-0 bg-white dark:bg-gray-900 border-t py-4 -mx-8 px-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <span className="text-sm text-gray-700 dark:text-gray-300">
+          {selectedLectures.size} lecture{selectedLectures.size !== 1 ? 's' : ''} selected
+        </span>
         <button
           onClick={handleGenerateNotes}
           disabled={selectedLectures.size === 0}

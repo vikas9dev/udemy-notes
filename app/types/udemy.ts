@@ -26,7 +26,7 @@ export interface CurriculumItem {
   object_index: number;
   is_completed: boolean;
   asset_type?: string;
-  supplementary_assets?: any[];
+  supplementary_assets?: unknown[];
   sort_order?: number;
   is_published?: boolean;
   asset?: {

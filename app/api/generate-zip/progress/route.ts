@@ -1,7 +1,5 @@
-import { NextResponse } from 'next/server';
 import { Progress } from '../../../types/progress';
 import { getCourseInfo, getLectureInfo } from '../../../utils/udemy';
-import { generateZipFile } from '../../../utils/zipGenerator';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

@@ -31,6 +31,7 @@ export default function CookieInput({ onCoursesLoaded }: CookieInputProps) {
         }
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchCourses = async (cookieValue: string, isBackground = false) => {
@@ -60,9 +61,13 @@ export default function CookieInput({ onCoursesLoaded }: CookieInputProps) {
       const data = await response.json();
       localStorage.setItem('storedCourses', JSON.stringify(data.results));
       onCoursesLoaded(data.results);
-    } catch (err: any) {
+    } catch (err: unknown) {
       if (!isBackground) {
-        setError(err.message);
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred.');
+        }
       }
       console.error('Error fetching courses:', err);
     } finally {
