@@ -1,4 +1,3 @@
-import { NextResponse } from 'next/server';
 import archiver from 'archiver';
 import { Readable, PassThrough } from 'stream';
 import { getNotes, generateStorageKey } from '../../utils/tempStorage';

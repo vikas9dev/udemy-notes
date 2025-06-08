@@ -1,5 +1,3 @@
-import { NextResponse } from 'next/server';
-import { generateZipFile } from '../../../utils/zipGenerator';
 import { getCourseInfo, getLectureInfo } from '../../../utils/udemy';
 import JSZip from 'jszip';
 

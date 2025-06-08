@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { UdemyCourse } from '../../../types/udemy';
+import Image from 'next/image';
 
 interface CourseGridProps {
   courses: UdemyCourse[];
@@ -92,7 +93,13 @@ export default function CourseGrid({ courses, selectedCourseId, onCourseSelect }
               className="h-5 w-5 text-indigo-600 focus:ring-indigo-500 border-gray-300 flex-shrink-0"
               onClick={e => e.stopPropagation()}
             />
-            <img src={course.image_240x135} alt={course.title} className="w-24 h-16 rounded-md object-cover flex-shrink-0 flex-grow-0" />
+            <Image
+              src={course.image_240x135}
+              alt={course.title}
+              width={96}
+              height={64}
+              className="w-24 h-16 rounded-md object-cover flex-shrink-0 flex-grow-0"
+            />
             <div className="flex flex-col flex-1 min-w-0">
               <span className="font-extrabold text-gray-800 dark:text-white truncate text-left text-xl mb-1 break-words">{course.title}</span>
               <div className="flex flex-col gap-1 mt-2">

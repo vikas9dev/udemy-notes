@@ -41,11 +41,9 @@ export async function getCourseInfo(courseId: string, cookie: string): Promise<C
     const results = data.results || [];
     
     // Process the curriculum items to organize chapters and lectures
-    let currentChapter: any = null;
+    let currentChapter: { title: string; objectIndex: number; lectures: { id: string; title: string; objectIndex: number }[] } | null = null;
     const chapters: CourseInfo['chapters'] = [];
 
-    // Since lectures follow their chapters in the results array,
-    // we can process them sequentially
     for (const item of results) {
       if (item._class === 'chapter') {
         currentChapter = {
@@ -125,8 +123,9 @@ export async function getLectureInfo(
     let content = '';
     if (data.asset?.captions?.length > 0) {
       // Find the English caption - it should be a complete object with url
-      const englishCaption = data.asset.captions.find((c: any) => 
-        c && c.locale_id === 'en_US' && c.url && c.status === 1
+      const englishCaption = data.asset.captions.find((c: unknown) => 
+        typeof c === 'object' && c !== null && 'locale_id' in c && 'url' in c && 'status' in c &&
+        c.locale_id === 'en_US' && c.url && c.status === 1
       );
 
       if (englishCaption?.url) {

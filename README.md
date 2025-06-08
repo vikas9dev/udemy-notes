@@ -57,6 +57,11 @@ Once you've created the `.env.local` file, let's start the development server:
 npm run dev
 ```
 
+To check the ESLint issue (for deployment):-
+```bash
+npm run lint
+```
+
 The application should now be running! Here's how to use it:
 
 1. Open your browser and go to `http://localhost:3000`
