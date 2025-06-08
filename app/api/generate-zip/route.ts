@@ -34,7 +34,7 @@ async function processLectures(
   
   try {
     // Get course title from the API
-    const courseInfo = await getCourseInfo(courseId);
+    const courseInfo = await getCourseInfo(courseId, '');
     const courseTitle = courseInfo?.title || 'Udemy Course';
     console.log('Course title:', courseTitle);
 
