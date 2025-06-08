@@ -7,9 +7,9 @@ export async function POST(request: Request) {
     const cookie = request.headers.get('X-Udemy-Cookie');
 
     if (!courseId || !lectureIds?.length || !cookie) {
-      return NextResponse.json(
-        { error: 'Missing required parameters' },
-        { status: 400 }
+      return new Response(
+        JSON.stringify({ error: 'Missing required parameters' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
@@ -85,9 +85,9 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error('Error generating ZIP file:', error);
-    return NextResponse.json(
-      { error: 'Failed to generate ZIP file' },
-      { status: 500 }
+    return new Response(
+      JSON.stringify({ error: 'Failed to generate ZIP file' }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }
 }
