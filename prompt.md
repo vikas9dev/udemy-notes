@@ -55,7 +55,7 @@ Great—thanks for the detailed answers. Here’s the plan:
    * Checking a chapter auto-checks all its child lectures.
    * Allow manually un-checking individual lectures if needed.
 
-3. **Action Bar** (sticky bottom)
+3. **Action Bar**
 
    * “Generate Notes for X lectures”
    * Secondary “Back to Courses” link.
@@ -66,13 +66,11 @@ Great—thanks for the detailed answers. Here’s the plan:
 
    * **Overall Progress**: progress bar (0–100%) at top.
    * **Current Item**: “Processing Chapter 3 → Lecture 2: ‘Your First Steps…’”
-   * **Logs** (collapsible): success/failure per lecture.
-   * **Retry Failed** button if any errors.
 
 2. **Download**
 
-   * As soon as ZIP streaming completes, show “Download ZIP” button.
-   * Or stream directly via a link (`<a href="/api/generate-zip?course=…"`).
+   * As soon as ZIP streaming completes, show message “Downloading ZIP file”.
+   * Auto Download the ZIP file. And show a "Close" button to close the modal.
 
 ---
 

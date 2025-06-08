@@ -60,7 +60,7 @@ export default function CourseGrid({ courses, selectedCourseId, onCourseSelect }
               setSearch(e.target.value);
               setCurrentPage(1); // Reset to first page on search
             }}
-            className="w-full p-2 border rounded-md"
+            className="w-full p-4 border rounded-md"
           />
         </div>
 
@@ -68,7 +68,7 @@ export default function CourseGrid({ courses, selectedCourseId, onCourseSelect }
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as SortOption)}
-          className="p-2 border rounded-md bg-white"
+          className="m-4 p-4 border rounded-md bg-white"
         >
           <option value="last_accessed">Recently Accessed</option>
           <option value="completion">Completion</option>
@@ -76,54 +76,32 @@ export default function CourseGrid({ courses, selectedCourseId, onCourseSelect }
       </div>
 
       {/* Course grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {paginatedCourses.map((course) => (
           <div
             key={course.id}
-            className={`border rounded-lg overflow-hidden flex hover:bg-gray-50 ${
-              selectedCourseId === course.id
-                ? 'ring-2 ring-indigo-500 bg-indigo-50'
-                : 'hover:shadow-lg'
-            }`}
+            className={`bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition p-4 cursor-pointer relative border-2 flex items-center gap-6 ${selectedCourseId === course.id ? 'border-indigo-600 ring-2 ring-indigo-400' : 'border-transparent'}`}
+            onClick={() => onCourseSelect(course)}
           >
-            <div className="flex items-center px-4">
-              <input
-                type="radio"
-                name="courseSelection"
-                id={`course-${course.id}`}
-                checked={selectedCourseId === course.id}
-                onChange={() => onCourseSelect(course)}
-                className="h-4 w-4 text-indigo-600 cursor-pointer"
-              />
-            </div>
-            <label 
-              htmlFor={`course-${course.id}`}
-              className="flex-grow flex cursor-pointer"
-            >
-              <div className="w-48 h-32 flex-shrink-0">
-                <img
-                  src={course.image_240x135}
-                  alt={course.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-6 flex-grow flex flex-col justify-between">
-                <h3 className="font-medium text-lg line-clamp-2">{course.title}</h3>
-                <div className="flex items-center mt-2">
-                  <div className="flex items-center space-x-3">
-                    <div className="h-2 w-28 bg-gray-200 rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-green-500 rounded-full"
-                        style={{ width: `${course.completion_ratio}%` }}
-                      />
-                    </div>
-                    <span className="text-sm text-gray-600">
-                      {course.completion_ratio}% Complete
-                    </span>
-                  </div>
+            <input
+              type="radio"
+              name="courseSelection"
+              id={`course-${course.id}`}
+              checked={selectedCourseId === course.id}
+              onChange={() => onCourseSelect(course)}
+              className="h-5 w-5 text-indigo-600 focus:ring-indigo-500 border-gray-300 flex-shrink-0"
+              onClick={e => e.stopPropagation()}
+            />
+            <img src={course.image_240x135} alt={course.title} className="w-24 h-16 rounded-md object-cover flex-shrink-0 flex-grow-0" />
+            <div className="flex flex-col flex-1 min-w-0">
+              <span className="font-extrabold text-gray-800 dark:text-white truncate text-left text-xl mb-1 break-words">{course.title}</span>
+              <div className="flex flex-col gap-1 mt-2">
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                  <div className="bg-emerald-500 h-2 rounded-full" style={{ width: `${course.completion_ratio}%` }} />
                 </div>
+                <span className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap text-left mt-1">Completed: {course.completion_ratio}%</span>
               </div>
-            </label>
+            </div>
           </div>
         ))}
       </div>

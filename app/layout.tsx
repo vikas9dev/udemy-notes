@@ -18,11 +18,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full">
-      <body className={`${inter.className} min-h-full flex flex-col bg-gray-50`}>
-        <Header />
-        <main className="flex-1">
-          {children}
-        </main>
+      <body className={`${inter.className} min-h-full flex flex-col bg-gray-50 dark:bg-gray-900 font-sans`}>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 min-h-full flex flex-col">
+          <Header />
+          <main className="flex-1">{children}</main>
+        </div>
         <Footer />
       </body>
     </html>

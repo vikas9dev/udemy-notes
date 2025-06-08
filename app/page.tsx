@@ -19,9 +19,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen p-8 max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8">Udemy Course Notes Generator</h1>
-      
+    <main className="min-h-screen">
       <CookieInput onCoursesLoaded={setCourses} />
 
       {error && (
@@ -38,9 +36,9 @@ export default function Home() {
             onCourseSelect={setSelectedCourse}
           />
 
-          <div className="sticky bottom-0 bg-white border-t py-4 mt-8 -mx-8 px-8">
+          <div className="sticky bottom-0 bg-white dark:bg-gray-900 border-t py-4 mt-8 -mx-8 px-8">
             <div className="max-w-6xl mx-auto flex items-center justify-between">
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-gray-600 dark:text-gray-300">
                 {selectedCourse ? (
                   <span>Selected: <strong>{selectedCourse.title}</strong></span>
                 ) : (

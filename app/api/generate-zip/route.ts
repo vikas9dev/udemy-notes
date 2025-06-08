@@ -1,13 +1,7 @@
-import { NextResponse } from 'next/server';
-import { headers } from 'next/headers';
 import archiver from 'archiver';
-import pLimit from 'p-limit';
-import { CaptionAsset } from '../../types/udemy';
-import { log } from 'console';
-import { storeNotes, generateStorageKey } from '../../utils/tempStorage';
-import { getCourseInfo } from '../../utils/udemy';
 import { PassThrough, Readable } from 'stream';
 import { Progress } from '../../types/progress';
+import { getCourseInfo } from '../../utils/udemy';
 
 // Create a write stream that we can pipe to the response
 class ResponseStream extends WritableStream<Uint8Array> {
