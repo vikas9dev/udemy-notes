@@ -1,39 +1,15 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+**🌐 Live Site:** [https://clever-liger-2e7c60.netlify.app/](https://clever-liger-2e7c60.netlify.app/)
 
-## Getting Started
+> ⚠️ **Note:** This Netlify deployment runs on a free tier with limited resources (4 GB RAM). As a result, downloading **multiple lectures at once** may cause the app to freeze.
+>
+> ✅ You can **download one lecture at a time** via the live site.
+> 🚀 To download **multiple lectures together**, it's recommended to **run the app locally**.
 
-First, run the development server:
+### 🛠️ Local Setup Requirements:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* Built with **[Next.js](https://nextjs.org)**
+* Requires a valid **Gemini API key**
+* To access Udemy course content, you'll need to provide your **Udemy cookies**
 
 ---
 
@@ -43,7 +19,7 @@ To use the application:
 npm install
 ```
 
-Before starting the application, we need to create the `.env.local` file with your Gemini API key. Since I cannot create it directly, please create a file named `.env.local` in the root directory of your project with the following content:
+Before starting the application, we need to create the `.env.local` file with your Gemini API key. Create a file named `.env.local` in the root directory of your project with the following content:
 
 ```env
 GEMINI_API_KEY=your_api_key_here
@@ -57,15 +33,9 @@ Once you've created the `.env.local` file, let's start the development server:
 npm run dev
 ```
 
-To check the ESLint issue (for deployment):-
-```bash
-npm run lint
-npm run build
-```
-
 The application should now be running! Here's how to use it:
 
-1. Open your browser and go to `http://localhost:3000`
+1. Open your browser and go to [http://localhost:3000](http://localhost:3000)
 
 2. To get your Udemy cookie:
    - Go to Udemy.com and log in
@@ -92,3 +62,12 @@ The application will:
 - Show completion progress for each course
 - Generate well-structured markdown notes using Gemini AI
 - Organize notes by chapter and lecture in a ZIP file
+
+---
+
+To check the ESLint issue (only for deployment, not required while running locally):-
+
+```bash
+npm run lint
+npm run build
+```
