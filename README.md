@@ -5,6 +5,8 @@
 > ✅ You can **download one lecture at a time** via the live site.
 > 🚀 To download **multiple lectures together**, it's recommended to **run the app locally**.
 
+**In VS Code => Type CTRL + SHIFT + V to open the markdown file in preview format.**
+
 ### 🛠️ Local Setup Requirements:
 
 * Built with **[Next.js](https://nextjs.org)**
